@@ -1,0 +1,130 @@
+---
+title: "Example Analysis"
+bibliography: references.bib
+---
+
+::: callout-margin
+![COVID-19](virus.jpg){width="400px" height="300px"}
+:::
+
+# Introduction
+
+The COVID-19 pandemic has affected countries around the world, with varying degrees of severity[@Ioannidis2020]. One key factor in controlling the spread of COVID-19 is vaccination rate[@Muttappallymyalil2022]. It is crucial for the general public to understand the relationship between vaccination and COVID-19 cases so that they can be more proactive in receiving COVID-19 vaccines[@Sallam2021]. This analysis explores the relationship between the number of COVID-19 cases and vaccination rates across several countries in South America. By examining this relationship, we aim to gain insights into the potential impact of vaccinations on the spread of COVID-19.
+
+This data is achieved from Our World in Data (https://ourworldindata.org/coronavirus).
+
+Data dictionary can be found here https://github.com/owid/covid-19-data/tree/master/public/data.
+
+::: callout-note
+Our World in Data is an online database that collects and shares data on different topics, including, health disparity, poverty, etc.
+:::
+
+# Data Processing
+
+1.  Use *filter* function to select countries in Sorth America.
+2.  Use *select* function to select columns needed for the analysis.
+3.  Use *group_by* and *summarize* function to group the data by location and month, and to select data about case, death and vaccination.
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(readr)
+
+covid <- read_csv("owid-covid-data.csv")
+
+south_america <- covid %>%
+  filter(continent %in% "South America")
+
+clean_data <- south_america %>%
+  select(location, date, new_cases_per_million, new_vaccinations_smoothed_per_million)
+
+by_month <- clean_data %>%
+  group_by(location, date = as.Date(paste(format(date, "%Y"), format(date, "%m"), "01", sep = "-"))) %>%
+  summarize(
+    monthly_cases_percent = sum(new_cases_per_million, na.rm = TRUE),
+    monthly_new_vaccination_percent = sum(new_vaccinations_smoothed_per_million, na.rm = TRUE)
+  )
+```
+
+# Trend of COVID-19 Cases in South America
+
+```{r}
+library(ggplot2)
+
+cases <- ggplot(data = by_month, mapping = aes(x = date, y = monthly_cases_percent, color = location)) +
+  geom_line() +
+  labs(
+    title = "Monthly COVID-19 Case Trends by Country in South America",
+    subtitle = "Tracking changes in COVID-19 cases over time across different countries in South America",
+    x = "Time",
+    y = "Monthly Cases per Million"
+  ) +
+  facet_wrap(~ location, scales = "free_x") +  
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+cases
+
+```
+
+# COVID-19 Vaccination in South America
+
+```{r}
+vaccination <- ggplot(data = by_month, aes(x = location, y = monthly_new_vaccination_percent, fill = location)) +
+  geom_bar(stat = "identity") + 
+  labs(
+    title = "COVID-19 Vaccination Dosage by Country",
+    subtitle = "Summarizing COVID-19 vaccination dosage in different countries in South America",
+    x = "Country",
+    y = "Vaccination Dosage"
+  ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+vaccination
+```
+
+::: callout-important
+Here, vaccination rate refers to the total dosage number of COVID-19 vaccine given per million people.
+:::
+
+# Relationship Between Vaccination and COVID-19 Cases in South America
+
+```{r}
+vac_sum <- by_month %>%
+  group_by(location) %>%
+  summarize(total_vaccination = sum(monthly_new_vaccination_percent))
+
+case_sum <- by_month %>%
+  group_by(location) %>%
+  summarize(total_cases = sum(monthly_cases_percent))
+
+combined <- left_join(vac_sum, case_sum, by = "location")
+
+relationship <- ggplot(data = combined, mapping = aes(x = total_vaccination, y = total_cases, color = location)) +
+  geom_point() + 
+  labs(
+    title = "Relationship Between Vaccination and New Case in South America",
+    subtitle = "There is no apparant relationship between vaccination and COVID-19 case in South America",
+    x = "Number of Vaccination",
+    y = "Number of COVID-19 Cases"
+  ) +
+  theme_classic()
+relationship
+```
+
+# Result
+
+Based on the analysis, we are able to conclude that there is no apparent relationship between vaccination dosage and COVID-19 case in South America. Some countries with moderate vaccination rate, like Venezuela, show low number of COVID-19 cases. On the other hand, some countries with high vaccination rate, like Uruguay, show high number of COVID-19 cases. This might be a result of the difference between policy, culture, and people's attitute towards COVID-19 in each country.
+
+# Function Used for Analysis
+
+Five functions from dplyr or tidyr: filter(), group_by(), summarize(), select(), left_join().
+
+Three geom\_() functions: geom_line(), geom_bar(), geom_point().
+
+# Reference
+
+[@Ioannidis2020]
+
+[@Sallam2021]
+
+[@Muttappallymyalil2022]

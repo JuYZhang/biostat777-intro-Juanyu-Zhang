@@ -1,0 +1,51 @@
+---
+title: "About"
+---
+
+# Education
+
+**Johns Hopkins Bloomberg School of Public Health** \| Baltimore, MD
+
+Sc.M. Molecular Microbiology and Immunology \| 08/2023-05/2025 (Anticipated)
+
+**University of California, San Diego** \| La Jolla, CA
+
+B.S. Human Biology & B.S Public Health \| 09/2019 - 06/2023
+
+# Professional Experience
+
+**Johns Hopkins Bloomberg School of Public Health, Department of Molecular Microbiology and Immunology** \| Baltimore, MD
+
+Graduate Research Assistant \| 09/2023-Present
+
+**UC San Diego, Department of Aneshesiology \|** La Jolla, CA
+
+Research Assistant \| 01/2022-01/2023
+
+**Scripps Research Institute, Department of Immunology and Microbiology \|** La Jolla, CA
+
+Research Intern \| 09/2022-12/2022
+
+**UC San Diego, Moores Cancer Center \|** La Jolla, CA
+
+Research Assistant \| 06/2021-06/2022
+
+**BGI Genomics** \| Shenzhen, CN
+
+Research Intern \| 12/2020-03/2021
+
+# Skills
+
+-   Cell Culture, Plaque Assay, TCID50 Assay, Neutralization Assay
+
+-   Working with mice and rats, including handling, genotyping, anesthesia, IP and IT injection, behavior experiments, etc.
+
+-   Immunohistochemistry, Confocal Imaging
+
+-   RNA Extraction, PCR, qPCR, Gel Electrophoresis, Western Blotting
+
+-   Flow Cytometry, Fluorescence-Activated Cell Sorting
+
+-   Single-Cell RNA Sequencing (10X), ATAC Sequencing
+
+-   Programming: R, Python, SQL
